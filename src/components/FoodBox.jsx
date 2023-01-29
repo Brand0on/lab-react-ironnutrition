@@ -1,3 +1,6 @@
+{
+  /*}
+
 import { Card, Col, Button } from 'antd';
 import AddFoodForm from './AddFoodForm';
 
@@ -32,3 +35,6 @@ function FoodBox(props) {
 }
 
 export default FoodBox;
+
+*/
+}

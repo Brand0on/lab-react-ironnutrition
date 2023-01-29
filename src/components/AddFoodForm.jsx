@@ -3,7 +3,10 @@ import { Card, Col, Button } from 'antd';
 import { useState } from 'react';
 
 const AddFoodForm = (props) => {
-  let allFood = props;
+  const [word, setWord] = useState('');
+  //let allFood = props;
+
+  const [allFoods, setAllFoods] = useState(props.food);
 
   const [data, setData] = useState({
     name: '',
@@ -32,21 +35,34 @@ const AddFoodForm = (props) => {
       servings: '',
     });
     //pushing the new recipe into the allFood array
-    allFood.food.push(data);
+    allFoods.push(data);
   };
 
-  const handleDeletion = (event) => {
-    event.preventDefault();
-    console.log(event.target.name);
-    const newArray = allFood.food.pop();
-    setData(newArray);
+  const handleDeletion = (foodName) => {
+    const remainFoods = allFoods.filter((oneFood) => {
+      return oneFood.name !== foodName;
+    });
+
+    setAllFoods(remainFoods);
   };
+
+  const searchingFood = allFoods.filter((food) => {
+    return food.name.toLowerCase().includes(word.toLowerCase());
+  });
+
+  console.log(searchingFood);
 
   return (
     <>
+      <input
+        value={word}
+        onChange={(e) => {
+          setWord(e.target.value);
+        }}
+      />
       <div>
         <Col>
-          {allFood.food.map((value) => {
+          {searchingFood.map((value) => {
             return (
               <>
                 <Card
@@ -60,7 +76,12 @@ const AddFoodForm = (props) => {
                     <b>Total Calories: {value.calories * value.servings} </b>{' '}
                     kcal
                   </p>
-                  <Button type="primary" onClick={handleDeletion}>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      handleDeletion(value.name);
+                    }}
+                  >
                     {' '}
                     Delete{' '}
                   </Button>
